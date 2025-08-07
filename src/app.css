@@ -3,7 +3,7 @@
 @plugin '@tailwindcss/typography';
 @plugin 'flowbite/plugin';
 
-	@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 	@theme {
 	  --color-primary-50: #fff5f2;
@@ -39,3 +39,40 @@
 	  }
 	}
 
+@font-face {
+font-family: 'Yekan';
+src: url( '/assets/fonts/BYekan.woff2' ) format( 'woff2' );
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+font-family: 'Yekan';
+src: url( '/assets/fonts/BYekan-Bold.woff2' ) format( 'woff2' );
+font-weight: bold;
+font-style: bold;
+}
+
+@font-face {
+font-family: 'Kalameh';
+src: url( '/assets/fonts/Kalameh-Regular.woff2' ) format( 'woff2' );
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+font-family: 'Kalameh';
+src: url( '/assets/fonts/Kalameh-Bold.woff2' ) format( 'woff2' );
+font-weight: bold;
+font-style: bold;
+}
+
+body{
+	font-family: Kalameh, Yekan;
+	font-size: 14pt;
+}
+
+.font-yekan {
+	font-family: Yekan;
+}
+.font-kalameh {
+	font-family: Kalameh;
+}

@@ -7,7 +7,6 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
-		school_name: "مدارس غیر دولتی روشنگران"
 	}
 }
 
