@@ -65,6 +65,13 @@ font-weight: bold;
 font-style: bold;
 }
 
+@font-face {
+font-family: 'Phamelo';
+src: url( '/assets/fonts/Phamelo.woff2' ) format( 'woff2' );
+font-weight: normal;
+font-style: normal;
+}
+
 body{
 	font-family: Kalameh, Yekan;
 	font-size: 14pt;
@@ -75,4 +82,7 @@ body{
 }
 .font-kalameh {
 	font-family: Kalameh;
+}
+.font-phamelo {
+	font-family: Phamelo;
 }
