@@ -8,7 +8,8 @@
     let password = $state('');
     let isAuthenticated = $state(false);
     let errorMessage = $state('');
-
+   
+    let { captchaJson } : { image: string, token: string } = $props();
     
 
     function handleSubmit(event: SubmitEvent) {
@@ -16,8 +17,20 @@
         errorMessage = 'نام‌کاربری یا رمز عبور اشتباه است';
     }
 
+    async function updateCaptcha() {
+        const captcha = await fetch('http://localhost/api/captcha');
+        if (captcha.ok) {
+            const data = await captcha.json();
+            console.log(data)
+            captchaJson = data;
+        } else {
+            errorMessage = 'خطا در دریافت کد امنیتی';
+        }
+    }   
+
     let usernameInput: HTMLInputElement;
     onMount(() => {
+    updateCaptcha();
     usernameInput.focus();
   });
 
@@ -54,9 +67,10 @@
         />
 
         <h1 class="text-2xl font-bold mb-2 text-center">{CONFIGS.school_name}</h1>
-        <hr class="border-blue-200 mb-4" />
+        <hr class="border-blue-200 mb-2" />
 
-        <form class="flex flex-col gap-4 mt-6 p-6" style="min-width: 300px;" onsubmit={handleSubmit}>
+        <form class="flex flex-col gap-4  p-6" style="min-width: 300px;" onsubmit={handleSubmit}>
+            <input name="token" type="hidden" id="token" bind:value={captchaJson.token} />
             <label class="text-blue-900 text-right text-lg font-bold">نام کاربری
                 <input
                     type="text"
@@ -70,6 +84,16 @@
             <label class="text-blue-900 text-right text-lg font-bold">رمز عبور
                 <input type="password" bind:value={password} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
             </label>
+            
+                <div class="flex items-center">
+                    <img id="captchaImage" src={captchaJson.image} alt="کد امنیتی" class="mr-2 w-[150px] h-[50px]" />
+                    <input
+                        type="text"
+                        class="mt-1 p-2 w-[150px] rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"
+                        placeholder="کد امنیتی"
+                        required />
+                </div>
+
             <button
                 type="submit"
                 class="bg-blue-500 font-kalameh text-lg font-bold hover:bg-blue-700 text-white py-2 rounded transition"

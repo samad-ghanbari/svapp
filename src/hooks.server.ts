@@ -10,7 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     return resolve(event);
   }
 
-  if (user) {
+  if (!user) {
     // Redirect to login if user not present and not already on login page
     throw redirect(303, '/login');
   }
