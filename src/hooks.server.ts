@@ -6,7 +6,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   const user = event.locals.user;
 
   // Allow unauthenticated access to login page or static assets
-  if (event.url.pathname === '/login' || event.url.pathname.startsWith('/static')) {
+  if (event.url.pathname === '/login' || event.url.pathname.startsWith('/static') || event.url.pathname.startsWith('/api/captcha')) {
     return resolve(event);
   }
 
