@@ -8,20 +8,17 @@
     let password = $state('');
     let isAuthenticated = $state(false);
     let errorMessage = $state('');
-    //let captchaImage = $state('');
-    //let token = $state('');
    
-    type CaptchaJson = {
+    type Captcha = {
         image: string;
         token: string;
     };
 
-    const { captchaJson1={image:"a", token:"a"} } = {};
-    const da = $props();
-    console.log(da)
-
-    let captchaImage = $state(); //captchaJson.image
-    let token = $state(); //captchaJson.token
+    let props = $props();
+    let captcha : Captcha = props.data.captcha;// $page.data.captcha;
+    if (typeof captcha === 'string') captcha = JSON.parse(captcha);
+    let image = $state(captcha.image);
+    let token = $state(captcha.token);
     
 
     function handleSubmit(event: SubmitEvent) {
@@ -32,8 +29,6 @@
     async function updateCaptcha() {
         const captcha = await fetch('http://localhost/api/captcha');
         const data = await captcha.json();
-        captchaImage = data.image;
-        token = data.token;
     }   
 
     let usernameInput: HTMLInputElement;
@@ -93,7 +88,7 @@
             </label>
             
                 <div class="flex items-center">
-                    <img id="captchaImage" src="{captchaImage}"  alt="کد امنیتی" class="mr-2 w-[150px] h-[50px]" />
+                    <img id="captchaImage" src="{image}"  alt="کد امنیتی" class="mr-2 w-[150px] h-[50px]" />
                     <input
                         type="text"
                         class="mt-1 p-2 w-[150px] rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"

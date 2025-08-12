@@ -1,7 +1,7 @@
 // src/routes/+page.js
-export async function load({ fetch }) {
+export async function load() {
   const response = await fetch('http://localhost/api/captcha'); 
   const captchaJson = await response.json();
 
-  return { captchaJson };
+  return  {captcha : captchaJson} ;
 }
