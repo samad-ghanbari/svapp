@@ -1,15 +1,14 @@
 <script lang="ts">
-    // You can add any logic here if needed
-  export let error : Error & {message?: string};
-  export let status : number;
 
-  const fallbackStatus = status ?? 404;
-  const fallbackMessage = error?.message ?? "Page not found";
+  import { page } from '$app/state';
+
+  const message : string = page?.error?.message ?? 'خطای سرور';
+  const status : number =  page.status ?? 500;
 
 </script>
 
 <svelte:head>
-  <title>{fallbackStatus} | Error</title>
+  <title>{status} | Error</title>
 </svelte:head>
 
 <div class="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-rose-10 to-rose-500 text-white text-2xl z-[9999]">
@@ -17,7 +16,7 @@
     <button
       type="button"
       class="w-30 h-30 mx-auto mb-4 cursor-pointer bg-transparent border-none p-0 flex justify-center"
-      on:click={() => window.location.href = '/'}
+      onclick={() => window.location.href = '/'}
       aria-label="Go to homepage"
     >
       <img
@@ -26,11 +25,11 @@
         class="w-30 h-30"
       />
     </button>
-        <h1 class="text-center font-bold font-phamelo">{fallbackStatus}</h1>
-        {#if fallbackStatus === 404}
+        <h1 class="text-center font-bold font-phamelo">{status}</h1>
+        {#if status === 404}
           <p dir="rtl">صفحه مورد نظر موجود نمی‌باشد.</p>
         {:else}
-          <p>{fallbackMessage}</p>
+          <p>{message}</p>
         {/if}
         <div class="flex items-center justify-center">
           <a

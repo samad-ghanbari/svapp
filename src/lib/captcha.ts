@@ -1,9 +1,9 @@
 import { createCanvas } from 'canvas';
 import jwt from 'jsonwebtoken';
-import { config } from 'dotenv';
+//import { config } from 'dotenv';
 import SHA256 from 'crypto-js/sha256';
 
-config();
+//config();
 
 function generateRandomText(length: number = 4) {
   const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz23456789';
