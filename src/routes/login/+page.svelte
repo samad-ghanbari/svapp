@@ -33,7 +33,7 @@
 
     let usernameInput: HTMLInputElement;
     onMount(() => {
-    usernameInput.focus();
+    //usernameInput.focus();
   });
 
   // run on every time username and password changes 
@@ -43,6 +43,10 @@
         }
     });
 
+function refreshCaptcha()
+{
+     window.location.href = '/login';
+}
 </script>
 
 <div class="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-blue-10 to-blue-100 text-white text-2xl z-[9999]">
@@ -87,13 +91,15 @@
                 <input type="password" bind:value={password} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
             </label>
             
-                <div class="flex items-center">
-                    <img id="captchaImage" src="{image}"  alt="کد امنیتی" class="mr-2 w-[150px] h-[50px]" />
+                <div class="flex items-center p-0">
+                    <button class="bg-trasparent border-none w-[40px] h-[50px] cursor-pointer" onclick={refreshCaptcha}><img id="captchaImage" src="/assets/images/refresh.png"  alt="کد امنیتی" class=" w-[40px] h-[50px]" /></button>
+                    <button class="bg-trasparent border-none w-[140px] m-[2px] h-[50px] cursor-pointer" onclick={refreshCaptcha}><img id="captchaImage" src="{image}"  alt="کد امنیتی" class="w-[140px] h-[50px]" /></button>
                     <input
                         type="text"
-                        class="mt-1 p-2 w-[150px] rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"
+                        class="w-[100px] h-[50px] rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"
                         placeholder="کد امنیتی"
-                        required />
+                        required
+                    />
                 </div>
 
             <button
