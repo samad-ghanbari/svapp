@@ -72,6 +72,14 @@ font-weight: normal;
 font-style: normal;
 }
 
+@font-face {
+font-family: 'Times';
+src: url( '/assets/fonts/timesbd.woff2' ) format( 'woff2' );
+font-weight: normal;
+font-style: normal;
+}
+
+
 body{
 	font-family: Kalameh, Yekan;
 	font-size: 14pt;
@@ -85,4 +93,7 @@ body{
 }
 .font-phamelo {
 	font-family: Phamelo;
+}
+.font-times {
+	font-family: Times;
 }

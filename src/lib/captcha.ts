@@ -1,9 +1,9 @@
 import { createCanvas } from 'canvas';
 import jwt from 'jsonwebtoken';
-//import { config } from 'dotenv';
 import SHA256 from 'crypto-js/sha256';
+import {CAPTCHA_SECRET, CAPTCHA_EXPIRES_IN} from '$env/static/private'
 
-//config();
+
 
 function generateRandomText(length: number = 4) {
   const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz23456789';
@@ -14,6 +14,28 @@ function generateRandomText(length: number = 4) {
   return text;
 }
 
+function getRandomColor() {
+  // Generate a random integer between 0 and 0xFFFFFF (16777215)
+  const randomInt = Math.floor(Math.random() * 16777216);
+  // Convert to hex and pad with zeros if necessary
+  const hexColor = "#" + randomInt.toString(16).padStart(6, "0");
+  return hexColor;
+}
+
+function getSelectiveColors()
+{
+  const colors = ['#FF5733', '#33FF57', '#3357FF', '#4a01f3ff', '#ec04ecff', '#00e4f5ff'];
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+}
+
+function getSelectiveBgColors()
+{
+  const colors = ['#f7e2ddff', '#cef5d5ff', '#c6cff7ff', '#c5acffff', '#f1c6f1ff', '#bdf4f8ff'];
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+}
+
 export const getCaptchaJson = async () =>{
   const width = 150;
   const height = 50;
@@ -22,7 +44,7 @@ export const getCaptchaJson = async () =>{
   const ctx = canvas.getContext('2d');
 
   // Background
-  ctx.fillStyle = '#deecf5ff';
+  ctx.fillStyle = getSelectiveBgColors();
   ctx.fillRect(0, 0, width, height);
 
   // Generate text
@@ -33,8 +55,8 @@ export const getCaptchaJson = async () =>{
   //drawLines(ctx, width, height);
 
   // Draw text
-  ctx.font = '30px Phamelo';
-  ctx.fillStyle = '#006ea1ff';
+  ctx.font = '40px Times';
+  ctx.fillStyle = getSelectiveColors();
   ctx.textBaseline = 'middle';
 
   // Slight random rotation and position for each letter for obfuscation
@@ -52,7 +74,7 @@ export const getCaptchaJson = async () =>{
 
   // draw lines
   const lineCount = 5;
-  ctx.strokeStyle = 'rgba(145, 0, 80, 0.99)';
+  ctx.strokeStyle = getSelectiveColors();
   for (let i = 0; i < lineCount; i++) {
     ctx.beginPath();
     ctx.moveTo(Math.random() * width, Math.random() * height);
@@ -76,8 +98,8 @@ export const getCaptchaJson = async () =>{
   const buffer = canvas.toBuffer('image/png');
   const base64Image = 'data:image/png;base64,' + buffer.toString('base64');
 
-const secret = process.env.CAPTCHA_SECRET || 'mySecretKey123';
-const expiresIn = Number(process.env.CAPTCHA_EXPIRES_IN) || 300; // 5 minutes in seconds 5*60
+const secret = CAPTCHA_SECRET || 'mySecretKey123';
+const expiresIn = Number(CAPTCHA_EXPIRES_IN) || 300; // 5 minutes in seconds 5*60
 
 const textHash = SHA256(text).toString();
 // Create JWT token with the text hash

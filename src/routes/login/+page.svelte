@@ -2,7 +2,7 @@
     // You can add any logic here if needed
     import { onMount } from 'svelte';
     import {CONFIGS} from '$lib/constants'
-
+	import { error } from '@sveltejs/kit';
 
     let username = $state('');
     let password = $state('');
@@ -14,26 +14,15 @@
         token: string;
     };
 
-    let props = $props();
-    let captcha : Captcha = props.data.captcha;// $page.data.captcha;
+    let {data} = $props();
+    let captcha : Captcha = data.captcha;// $page.data.captcha;
     if (typeof captcha === 'string') captcha = JSON.parse(captcha);
     let image = $state(captcha.image);
     let token = $state(captcha.token);
-    
-
-    function handleSubmit(event: SubmitEvent) {
-        event.preventDefault();
-        errorMessage = 'نام‌کاربری یا رمز عبور اشتباه است';
-    }
-
-    async function updateCaptcha() {
-        const captcha = await fetch('http://localhost/api/captcha');
-        const data = await captcha.json();
-    }   
 
     let usernameInput: HTMLInputElement;
     onMount(() => {
-    //usernameInput.focus();
+    usernameInput.focus();    
   });
 
   // run on every time username and password changes 
@@ -75,20 +64,21 @@ function refreshCaptcha()
         <h1 class="text-2xl font-bold mb-2 text-center">{CONFIGS.school_name}</h1>
         <hr class="border-blue-200 mb-2" />
 
-        <form class="flex flex-col gap-4  p-6" style="min-width: 300px;" onsubmit={handleSubmit}>
+        <form class="flex flex-col gap-4  p-6" style="min-width: 300px;" method="POST"  >
             <input name="token" type="hidden" id="token" bind:value={token} />
             <label class="text-blue-900 text-right text-lg font-bold">نام کاربری
                 <input
                     type="text"
                     bind:value={username}
                     bind:this={usernameInput}
+                    name="username"
                     class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"
                     placeholder="نام کاربری"
                     required
                 />
             </label>
             <label class="text-blue-900 text-right text-lg font-bold">رمز عبور
-                <input type="password" bind:value={password} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
+                <input type="password" name="password" bind:value={password} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
             </label>
             
                 <div class="flex items-center p-0">
@@ -96,6 +86,7 @@ function refreshCaptcha()
                     <button class="bg-trasparent border-none w-[140px] m-[2px] h-[50px] cursor-pointer" onclick={refreshCaptcha}><img id="captchaImage" src="{image}"  alt="کد امنیتی" class="w-[140px] h-[50px]" /></button>
                     <input
                         type="text"
+                        name="captcha"
                         class="w-[100px] h-[50px] rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right"
                         placeholder="کد امنیتی"
                         required
