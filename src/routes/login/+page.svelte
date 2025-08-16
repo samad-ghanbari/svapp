@@ -14,15 +14,22 @@
         token: string;
     };
 
-    let {data} = $props();
+    let {data, form } = $props();
+  
     let captcha : Captcha = data.captcha;// $page.data.captcha;
     if (typeof captcha === 'string') captcha = JSON.parse(captcha);
     let image = $state(captcha.image);
     let token = $state(captcha.token);
 
     let usernameInput: HTMLInputElement;
-    onMount(() => {
-    usernameInput.focus();    
+    let passwordInput: HTMLInputElement;
+    onMount(() => { 
+    username = form?.username  ?? "";
+    if(username === "")
+        usernameInput.focus();  
+    else
+        passwordInput.focus();
+    errorMessage = form?.error ?? "";
   });
 
   // run on every time username and password changes 
@@ -47,6 +54,7 @@ function refreshCaptcha()
     {#if errorMessage}
         <button
             type="button"
+            dir="rtl"
             class="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-br from-rose-700 to-purple-700 text-white px-10 py-3 text-lg font-bold rounded shadow-lg z-50 animate-fade-in"
             onclick={() => errorMessage = ''}
             aria-label="بستن پیام خطا"
@@ -78,7 +86,7 @@ function refreshCaptcha()
                 />
             </label>
             <label class="text-blue-900 text-right text-lg font-bold">رمز عبور
-                <input type="password" name="password" bind:value={password} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
+                <input type="password" name="password" bind:value={password} bind:this={passwordInput} class="mt-1 p-2 w-full rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder:text-right" placeholder="رمز عبور" required />
             </label>
             
                 <div class="flex items-center p-0">
