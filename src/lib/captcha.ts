@@ -6,7 +6,7 @@ import {CAPTCHA_SECRET, CAPTCHA_EXPIRES_IN} from '$env/static/private'
 
 
 function generateRandomText(length: number = 4) {
-  const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz23456789';
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
   let text = '';
   for (let i = 0; i < length; i++) {
     text += chars.charAt(Math.floor(Math.random() * chars.length));

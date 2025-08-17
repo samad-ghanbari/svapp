@@ -14,7 +14,7 @@ export async function load() {
 
 export const actions = {
 
-  default: async ({ request }) => {
+  default: async ({ request, cookies }) => {
     // post action
     const formData = await request.formData();
     const token : string = (formData.get("token") as string | null) ?? "";
@@ -36,14 +36,25 @@ export const actions = {
 
       if(await authenticate(username, password))
       {
-        const token = createToken(username);
-        throw redirect(300,"/");
+        const token = await createToken(username);
+
+        // Set cookie with token
+        cookies.set('token', token, {
+          path: '/',
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+          maxAge: 60 * 60 // 1 hour
+        });
+
+        // Redirect to home page
+        if(request.url.endsWith('/login'))
+          throw redirect(303, '/');
       }
       else
       {
         return fail(400,{ error:'نام کاربری یا رمزعبور اشتباه می‌باشد.', username: username });
       }
-
     }
     catch( err )
     {

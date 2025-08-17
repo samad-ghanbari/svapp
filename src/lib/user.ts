@@ -3,8 +3,7 @@ import { TOKEN_SECRET } from "$env/static/private";
 
 export async function authenticate(username: string, password : string)
 {
-    console.log(username, password);
-    return false;
+    return true;
 }
 
 export async function createToken(username: string)
