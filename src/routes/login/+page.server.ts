@@ -16,14 +16,15 @@ export const actions = {
 	default: async ({ request, cookies }) => {
 		// post action
 		const formData = await request.formData();
-		const token: string = (formData.get('token') as string | null) ?? '';
+		const formToken: string = (formData.get('token') as string | null) ?? '';
 		const username: string = (formData.get('username') as string | null) ?? '';
 		const password: string = (formData.get('password') as string | null) ?? '';
 		const captcha: string = (formData.get('captcha') as string | null) ?? '';
 		let authenticated: boolean = false;
 		let errorMessage: string = '';
+		let token: string = '';
 		try {
-			const decoded = jwt.verify(token, CAPTCHA_SECRET);
+			const decoded = jwt.verify(formToken, CAPTCHA_SECRET);
 			const { hash } = decoded as { hash: string };
 			const captchaHash = SHA256(captcha).toString();
 
@@ -33,7 +34,13 @@ export const actions = {
 			}
 
 			if (await authenticate(username, password)) {
-				const token = await createToken(username);
+				// check user-agent
+				const userAgent = request.headers.get('user-agent');
+				// x-forwarded-for
+				let xForwardedFor: string | null | undefined = request.headers.get('x-forwarded-for');
+				xForwardedFor = xForwardedFor?.split(',')[0]?.trim();
+
+				token = await createToken(username, userAgent, xForwardedFor);
 				authenticated = true;
 			} else {
 				authenticated = false;
