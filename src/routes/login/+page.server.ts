@@ -13,9 +13,9 @@ export async function load() {
 }
 
 export const actions = {
-	default: async ({ request, cookies }) => {
+	default: async (event) => {
 		// post action
-		const formData = await request.formData();
+		const formData = await event.request.formData();
 		const formToken: string = (formData.get('token') as string | null) ?? '';
 		const username: string = (formData.get('username') as string | null) ?? '';
 		const password: string = (formData.get('password') as string | null) ?? '';
@@ -35,12 +35,13 @@ export const actions = {
 
 			if (await authenticate(username, password)) {
 				// check user-agent
-				const userAgent = request.headers.get('user-agent');
+				const userAgent = event.request.headers.get('user-agent');
 				// x-forwarded-for
-				let xForwardedFor: string | null | undefined = request.headers.get('x-forwarded-for');
+				let xForwardedFor: string | null | undefined = event.request.headers.get('x-forwarded-for');
 				xForwardedFor = xForwardedFor?.split(',')[0]?.trim();
+				const ip: string = event.getClientAddress();
 
-				token = await createToken(username, userAgent, xForwardedFor);
+				token = await createToken(username, ip, userAgent, xForwardedFor);
 				authenticated = true;
 			} else {
 				authenticated = false;
@@ -53,7 +54,7 @@ export const actions = {
 
 		if (authenticated) {
 			// Set cookie with token
-			cookies.set('token', token, {
+			event.cookies.set('token', token, {
 				path: '/',
 				httpOnly: true,
 				secure: false,

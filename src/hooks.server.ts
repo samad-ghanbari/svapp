@@ -9,9 +9,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (event.url.pathname.startsWith('/static') || event.url.pathname.startsWith('/api/captcha')) {
 		return resolve(event);
 	}
-
-	console.log(event.getClientAddress());
-
 	event.locals.user = null; // default to no user
 	const token = event.cookies.get('token');
 
