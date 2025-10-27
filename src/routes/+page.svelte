@@ -3,6 +3,8 @@
 	import { CONFIGS } from '$lib/constants';
 	import Toolbar from '$lib/components/Toolbar.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
+	import Button from '$lib/components/Button.svelte';
+	// "allowArbitraryExtensions": true   add this line to tsconfig for ts in .svelet
 
 	//return { data };
 	// let { data } = $props();
@@ -16,7 +18,6 @@
 	// let name = data.data.name;
 
 	let { data } = $props(); // { data , form, params}
-	console.log(data);
 	let id = data.id;
 	let name = data.name;
 </script>
@@ -32,4 +33,7 @@
 
 	<h1>{id}</h1>
 	<h1>{name}</h1>
+	<Button confirm={true} name="confirm" action={() => console.log('ok')} />
+	<br />
+	<Button confirm={false} name="cancel" action={() => console.log('no ok')} />
 </div>
