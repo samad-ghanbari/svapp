@@ -1,13 +1,19 @@
+<script lang="ts" module>
+	let state: boolean = $state(false);
+</script>
+
 <script lang="ts">
 	import { GradientButton } from 'flowbite-svelte';
 	import { CheckCircleSolid, ChevronSortOutline, CloseCircleSolid } from 'flowbite-svelte-icons';
+	import Mod1 from '$lib/components/Mod1.svelte';
 
 	const { confirm, name, action } = $props<{ confirm: Boolean; name: string; action: any }>();
-	let state: boolean = $state(false);
+
+	let state2: boolean = $state(false);
 
 	function handleClick() {
 		console.log('Button clicked!', confirm);
-		state = !state; // toggle local state if you want
+		state2 = !state2; // toggle local state if you want
 		action();
 	}
 </script>
@@ -32,8 +38,15 @@ pixel to tailwind
 
 96px > 96/4 = 24
 -->
-<div class="h-10 w-80 bg-blue-400">
-	<GradientButton onclick={handleClick} class="" color={confirm ? 'greenToBlue' : 'pinkToOrange'}>
+
+<div class="flex h-10 w-full items-center justify-center bg-blue-400">
+	<Mod1 label="Test Module" bind:status={state2} />
+	<GradientButton
+		onclick={handleClick}
+		class=""
+		color={confirm ? 'greenToBlue' : 'pinkToOrange'}
+		disabled={state2}
+	>
 		{#if confirm}
 			<CheckCircleSolid class="mr-2 h-5 w-5" />
 			تایید
